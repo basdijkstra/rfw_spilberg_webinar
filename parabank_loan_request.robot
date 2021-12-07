@@ -17,18 +17,33 @@ ${textlabel_loanresult}  id:loanStatus
 
 *** Test Cases ***
 Requesting a loan within parameters should be successful
-    Wait And Type  ${textfield_username}  john
-    Wait And Type  ${textfield_password}  demo
-    Wait And Click Button  ${button_login}
-    Wait And Click Link  ${link_request_loan}
-    Wait And Type  ${textfield_loanamount}  1000
-    Wait And Type  ${textfield_downpayment}  10
-    Wait And Select Value  ${dropdown_fromaccount}  12900
-    Wait And Click Button  ${button_requestloan}
-    Check Element Text  ${textlabel_loanresult}  Approved
-
+    Login As  username=john  password=demo
+    Navigate Via User Menu To  ${link_request_loan}
+    Submit Loan Application  amount=1000  downpayment=100  fromaccountid=12900
+    Check Loan Application Result Is  Approved
 
 *** Keywords ***
+Login As
+    [Arguments]  ${username}  ${password}
+    Wait And Type  ${textfield_username}  ${username}
+    Wait And Type  ${textfield_password}  ${password}
+    Wait And Click Button  ${button_login}
+
+Navigate Via User Menu To
+    [Arguments]  ${link}
+    Wait And Click Link  ${link_request_loan}
+
+Submit Loan Application
+    [Arguments]  ${amount}  ${downpayment}  ${fromaccountid}
+    Wait And Type  ${textfield_loanamount}  ${amount}
+    Wait And Type  ${textfield_downpayment}  ${downpayment}
+    Wait And Select Value  ${dropdown_fromaccount}  ${fromaccountid}
+    Wait And Click Button  ${button_requestloan}
+
+Check Loan Application Result Is
+    [Arguments]  ${expected_result}
+    Check Element Text  ${textlabel_loanresult}  ${expected_result}
+
 Open And Maximize Browser
     [Arguments]  ${url}  ${browser}
     Open Browser  ${url}  ${browser}
