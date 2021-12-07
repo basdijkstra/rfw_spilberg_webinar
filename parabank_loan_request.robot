@@ -1,6 +1,7 @@
 *** Settings ***
 Documentation    Tests to verify that we can request a loan
 Library  SeleniumLibrary
+Resource  common_keywords.resource
 Test Setup  Open And Maximize Browser  http://localhost:8080/parabank  Chrome
 Test Teardown  Close Browser
 
@@ -43,33 +44,3 @@ Submit Loan Application
 Check Loan Application Result Is
     [Arguments]  ${expected_result}
     Check Element Text  ${textlabel_loanresult}  ${expected_result}
-
-Open And Maximize Browser
-    [Arguments]  ${url}  ${browser}
-    Open Browser  ${url}  ${browser}
-    Maximize Browser Window
-
-Wait And Type
-   [Arguments]  ${locator}  ${value}
-   Wait Until Element Is Enabled  ${locator}
-   Input Text  ${locator}  ${value}
-
-Wait And Click Button
-    [Arguments]  ${locator}
-    Wait Until Element Is Enabled  ${locator}
-    Click Button  ${locator}
-
-Wait And Click Link
-    [Arguments]  ${locator}
-    Wait Until Element Is Enabled  ${locator}
-    Click Link  ${locator}
-
-Wait And Select Value
-    [Arguments]  ${locator}  ${value_to_select}
-    Wait Until Element Is Enabled  ${locator}
-    Select From List By Value  ${locator}  ${value_to_select}
-
-Check Element Text
-    [Arguments]  ${locator}  ${expected_text}
-    Wait Until Element Is Visible  ${locator}
-    Element Text Should Be  ${locator}  ${expected_text}
